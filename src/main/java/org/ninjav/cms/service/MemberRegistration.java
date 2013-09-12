@@ -16,6 +16,7 @@
  */
 package org.ninjav.cms.service;
 
+import java.util.logging.Level;
 import org.ninjav.cms.model.Member;
 
 import javax.ejb.Stateless;
@@ -30,15 +31,13 @@ public class MemberRegistration {
 
     @Inject
     private Logger log;
-
     @Inject
     private EntityManager em;
-
     @Inject
     private Event<Member> memberEventSrc;
 
     public void register(Member member) throws Exception {
-        log.info("Registering " + member.getName());
+        log.log(Level.INFO, "Registering {0}", member.getName());
         em.persist(member);
         memberEventSrc.fire(member);
     }

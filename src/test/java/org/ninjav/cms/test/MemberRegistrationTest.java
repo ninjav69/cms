@@ -16,26 +16,25 @@
  */
 package org.ninjav.cms.test;
 
-import static org.junit.Assert.assertNotNull;
-
+import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import javax.inject.Inject;
-
 import org.jboss.arquillian.container.test.api.Deployment;
 import org.jboss.arquillian.junit.Arquillian;
-import org.ninjav.cms.model.Member;
-import org.ninjav.cms.service.MemberRegistration;
-import org.ninjav.cms.util.Resources;
 import org.jboss.shrinkwrap.api.Archive;
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.EmptyAsset;
 import org.jboss.shrinkwrap.api.spec.WebArchive;
+import static org.junit.Assert.assertNotNull;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.ninjav.cms.model.Member;
+import org.ninjav.cms.service.MemberRegistration;
+import org.ninjav.cms.util.Resources;
 
 @RunWith(Arquillian.class)
 public class MemberRegistrationTest {
+
     @Deployment
     public static Archive<?> createTestArchive() {
         return ShrinkWrap.create(WebArchive.class, "test.war")
@@ -45,10 +44,8 @@ public class MemberRegistrationTest {
                 // Deploy our test datasource
                 .addAsWebInfResource("test-ds.xml");
     }
-
     @Inject
     MemberRegistration memberRegistration;
-
     @Inject
     Logger log;
 
@@ -60,7 +57,6 @@ public class MemberRegistrationTest {
         newMember.setPhoneNumber("2125551234");
         memberRegistration.register(newMember);
         assertNotNull(newMember.getId());
-        log.info(newMember.getName() + " was persisted with id " + newMember.getId());
+        log.log(Level.INFO, "{0} was persisted with id {1}", new Object[]{newMember.getName(), newMember.getId()});
     }
-
 }
